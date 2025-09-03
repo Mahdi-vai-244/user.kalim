@@ -30,78 +30,7 @@
             min-height: 100vh;
         }
         
-        /* Login Form */
-        #loginSection {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: linear-gradient(135deg, var(--dark), var(--primary));
-        }
-        
-        .login-container {
-            background: white;
-            border-radius: 10px;
-            padding: 30px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-        
-        .login-title {
-            text-align: center;
-            margin-bottom: 20px;
-            color: var(--dark);
-            font-size: 1.8rem;
-        }
-        
-        .login-logo {
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 2.5rem;
-            color: var(--primary);
-        }
-        
-        .login-form .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .login-form .form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-        
-        .login-form .form-input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-        
-        .login-btn {
-            width: 100%;
-            padding: 12px;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        .login-btn:hover {
-            background-color: #2980b9;
-        }
-        
-        /* Main Admin Panel (Initially Hidden) */
-        #adminPanel {
-            display: none;
-        }
-        
+        /* Main Admin Panel */
         .admin-container {
             display: flex;
             min-height: 100vh;
@@ -507,263 +436,236 @@
     </style>
 </head>
 <body>
-    <!-- Login Section -->
-    <section id="loginSection">
-        <div class="login-container">
-            <div class="login-logo">
-                <i class="fas fa-user-shield"></i>
-            </div>
-            <h2 class="login-title">Admin Login</h2>
-            <form class="login-form" id="adminLoginForm">
-                <div class="form-group">
-                    <label class="form-label">Email</label>
-                    <input type="email" class="form-input" placeholder="admin@example.com" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" class="form-input" placeholder="Enter your password" required>
-                </div>
-                <button type="submit" class="login-btn">Login</button>
-            </form>
-        </div>
-    </section>
-
     <!-- Main Admin Panel -->
-    <section id="adminPanel">
-        <div class="admin-container">
-            <!-- Sidebar -->
-            <div class="sidebar">
-                <div class="logo-container">
-                    <div class="logo">GS</div>
-                    <div class="web-name">GS Tournament</div>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo-container">
+                <div class="logo">GS</div>
+                <div class="web-name">GS Tournament</div>
+            </div>
+            
+            <div class="admin-info">
+                <div class="admin-avatar">
+                    <i class="fas fa-user-shield"></i>
                 </div>
-                
-                <div class="admin-info">
-                    <div class="admin-avatar">
-                        <i class="fas fa-user-shield"></i>
-                    </div>
-                    <div class="admin-name">Admin User</div>
-                    <div class="admin-role">Super Administrator</div>
+                <div class="admin-name">Admin User</div>
+                <div class="admin-role">Super Administrator</div>
+            </div>
+            
+            <ul class="menu">
+                <li class="menu-item active" data-section="dashboard">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </li>
+                <li class="menu-item" data-section="tournaments">
+                    <i class="fas fa-trophy"></i>
+                    <span>Tournaments</span>
+                </li>
+                <li class="menu-item" data-section="createTournament">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Create Tournament</span>
+                </li>
+                <li class="menu-item" data-section="userRequests">
+                    <i class="fas fa-users"></i>
+                    <span>User Requests</span>
+                </li>
+                <li class="menu-item" data-section="roomManagement">
+                    <i class="fas fa-door-open"></i>
+                    <span>Room Management</span>
+                </li>
+                <li class="menu-item" data-section="history">
+                    <i class="fas fa-history"></i>
+                    <span>History</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1 class="page-title">Admin Dashboard</h1>
+                <div class="header-actions">
+                    <button class="header-btn" id="refreshBtn">
+                        <i class="fas fa-sync-alt"></i>
+                        Refresh
+                    </button>
                 </div>
-                
-                <ul class="menu">
-                    <li class="menu-item active" data-section="dashboard">
-                        <i class="fas fa-th-large"></i>
-                        <span>Dashboard</span>
-                    </li>
-                    <li class="menu-item" data-section="tournaments">
-                        <i class="fas fa-trophy"></i>
-                        <span>Tournaments</span>
-                    </li>
-                    <li class="menu-item" data-section="createTournament">
-                        <i class="fas fa-plus-circle"></i>
-                        <span>Create Tournament</span>
-                    </li>
-                    <li class="menu-item" data-section="userRequests">
-                        <i class="fas fa-users"></i>
-                        <span>User Requests</span>
-                    </li>
-                    <li class="menu-item" data-section="roomManagement">
-                        <i class="fas fa-door-open"></i>
-                        <span>Room Management</span>
-                    </li>
-                    <li class="menu-item" data-section="history">
-                        <i class="fas fa-history"></i>
-                        <span>History</span>
-                    </li>
-                    <li class="menu-item" onclick="logout()">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span>Logout</span>
-                    </li>
-                </ul>
             </div>
 
-            <!-- Main Content -->
-            <div class="main-content">
-                <div class="header">
-                    <h1 class="page-title">Admin Dashboard</h1>
-                    <div class="header-actions">
-                        <button class="header-btn">
-                            <i class="fas fa-sync-alt"></i>
-                            Refresh
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Dashboard Stats -->
-                <div class="stats-container">
-                    <div class="stat-card">
-                        <div class="stat-icon" style="background-color: #3498db;">
-                            <i class="fas fa-trophy"></i>
-                        </div>
-                        <div class="stat-info">
-                            <div class="stat-value">0</div>
-                            <div class="stat-label">Active Tournaments</div>
-                        </div>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <div class="stat-icon" style="background-color: #2ecc71;">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <div class="stat-info">
-                            <div class="stat-value">0</div>
-                            <div class="stat-label">User Requests</div>
-                        </div>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <div class="stat-icon" style="background-color: #e74c3c;">
-                            <i class="fas fa-gamepad"></i>
-                        </div>
-                        <div class="stat-info">
-                            <div class="stat-value">0</div>
-                            <div class="stat-label">Running Matches</div>
-                        </div>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <div class="stat-icon" style="background-color: #f39c12;">
-                            <i class="fas fa-history"></i>
-                        </div>
-                        <div class="stat-info">
-                            <div class="stat-value">0</div>
-                            <div class="stat-label">Completed Events</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Dashboard Section -->
-                <div class="content-section active" id="dashboardSection">
-                    <h2 class="section-title">Recent Activity</h2>
-                    
-                    <div class="empty-state">
-                        <i class="fas fa-inbox"></i>
-                        <p>No tournaments created yet</p>
-                        <button class="header-btn" onclick="showSection('createTournament')">
-                            <i class="fas fa-plus-circle"></i>
-                            Create Your First Tournament
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Tournaments Section -->
-                <div class="content-section" id="tournamentsSection">
-                    <h2 class="section-title">All Tournaments</h2>
-                    
-                    <div class="empty-state">
+            <!-- Dashboard Stats -->
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background-color: #3498db;">
                         <i class="fas fa-trophy"></i>
-                        <p>No tournaments available</p>
-                        <button class="header-btn" onclick="showSection('createTournament')">
-                            <i class="fas fa-plus-circle"></i>
-                            Create New Tournament
-                        </button>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value">0</div>
+                        <div class="stat-label">Active Tournaments</div>
                     </div>
                 </div>
-
-                <!-- Create Tournament Section -->
-                <div class="content-section" id="createTournamentSection">
-                    <h2 class="section-title">Create New Tournament</h2>
-                    
-                    <form id="tournamentForm">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Tournament Name</label>
-                                <input type="text" class="form-input" placeholder="Enter tournament name" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">Entry Type</label>
-                                <select class="form-select" required>
-                                    <option value="">Select type</option>
-                                    <option value="free">Free</option>
-                                    <option value="paid">Paid</option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Entry Fee (if paid)</label>
-                                <input type="number" class="form-input" placeholder="Enter fee amount">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">Max Participants</label>
-                                <input type="number" class="form-input" placeholder="Enter max participants" required>
-                            </div>
-                        </div>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Start Date & Time</label>
-                                <input type="datetime-local" class="form-input" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">Status</label>
-                                <select class="form-select" required>
-                                    <option value="upcoming">Upcoming</option>
-                                    <option value="running">Running</option>
-                                    <option value="completed">Completed</option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">Prizes (comma separated)</label>
-                            <input type="text" class="form-input" placeholder="1st: ₹1000, 2nd: ₹500, ...">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">Tournament Notice</label>
-                            <textarea class="form-textarea" placeholder="Enter notice for participants"></textarea>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">Tournament Image URL</label>
-                            <input type="url" class="form-input" placeholder="https://example.com/image.jpg">
-                        </div>
-                        
-                        <button type="submit" class="form-submit">Create Tournament</button>
-                    </form>
-                </div>
-
-                <!-- User Requests Section -->
-                <div class="content-section" id="userRequestsSection">
-                    <h2 class="section-title">User Join Requests</h2>
-                    
-                    <div class="empty-state">
+                
+                <div class="stat-card">
+                    <div class="stat-icon" style="background-color: #2ecc71;">
                         <i class="fas fa-users"></i>
-                        <p>No user requests yet</p>
-                        <p>User requests will appear here when players try to join paid tournaments</p>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value">0</div>
+                        <div class="stat-label">User Requests</div>
                     </div>
                 </div>
-
-                <!-- Room Management Section -->
-                <div class="content-section" id="roomManagementSection">
-                    <h2 class="section-title">Room ID & Password Management</h2>
-                    
-                    <div class="empty-state">
-                        <i class="fas fa-door-open"></i>
-                        <p>No rooms created yet</p>
-                        <p>Create tournaments first, then manage room IDs and passwords here</p>
+                
+                <div class="stat-card">
+                    <div class="stat-icon" style="background-color: #e74c3c;">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value">0</div>
+                        <div class="stat-label">Running Matches</div>
                     </div>
                 </div>
-
-                <!-- History Section -->
-                <div class="content-section" id="historySection">
-                    <h2 class="section-title">Tournament History</h2>
-                    
-                    <div class="empty-state">
+                
+                <div class="stat-card">
+                    <div class="stat-icon" style="background-color: #f39c12;">
                         <i class="fas fa-history"></i>
-                        <p>No tournament history available</p>
-                        <p>Completed tournaments will appear here</p>
                     </div>
+                    <div class="stat-info">
+                        <div class="stat-value">0</div>
+                        <div class="stat-label">Completed Events</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Section -->
+            <div class="content-section active" id="dashboardSection">
+                <h2 class="section-title">Recent Activity</h2>
+                
+                <div class="empty-state">
+                    <i class="fas fa-inbox"></i>
+                    <p>No tournaments created yet</p>
+                    <button class="header-btn" onclick="showSection('createTournament')">
+                        <i class="fas fa-plus-circle"></i>
+                        Create Your First Tournament
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tournaments Section -->
+            <div class="content-section" id="tournamentsSection">
+                <h2 class="section-title">All Tournaments</h2>
+                
+                <div class="empty-state">
+                    <i class="fas fa-trophy"></i>
+                    <p>No tournaments available</p>
+                    <button class="header-btn" onclick="showSection('createTournament')">
+                        <i class="fas fa-plus-circle"></i>
+                        Create New Tournament
+                    </button>
+                </div>
+            </div>
+
+            <!-- Create Tournament Section -->
+            <div class="content-section" id="createTournamentSection">
+                <h2 class="section-title">Create New Tournament</h2>
+                
+                <form id="tournamentForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Tournament Name</label>
+                            <input type="text" class="form-input" placeholder="Enter tournament name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Entry Type</label>
+                            <select class="form-select" id="entryType" required>
+                                <option value="">Select type</option>
+                                <option value="free">Free</option>
+                                <option value="paid">Paid</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group" id="feeField" style="display: none;">
+                            <label class="form-label">Entry Fee (if paid)</label>
+                            <input type="number" class="form-input" id="entryFee" placeholder="Enter fee amount">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Max Participants</label>
+                            <input type="number" class="form-input" id="maxParticipants" placeholder="Enter max participants" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Start Date & Time</label>
+                            <input type="datetime-local" class="form-input" id="startTime" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Status</label>
+                            <select class="form-select" id="tournamentStatus" required>
+                                <option value="upcoming">Upcoming</option>
+                                <option value="running">Running</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Prizes (comma separated)</label>
+                        <input type="text" class="form-input" id="prizes" placeholder="1st: ₹1000, 2nd: ₹500, ...">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Tournament Notice</label>
+                        <textarea class="form-textarea" id="tournamentNotice" placeholder="Enter notice for participants"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Tournament Image URL</label>
+                        <input type="url" class="form-input" id="tournamentImage" placeholder="https://example.com/image.jpg">
+                    </div>
+                    
+                    <button type="submit" class="form-submit">Create Tournament</button>
+                </form>
+            </div>
+
+            <!-- User Requests Section -->
+            <div class="content-section" id="userRequestsSection">
+                <h2 class="section-title">User Join Requests</h2>
+                
+                <div class="empty-state">
+                    <i class="fas fa-users"></i>
+                    <p>No user requests yet</p>
+                    <p>User requests will appear here when players try to join paid tournaments</p>
+                </div>
+            </div>
+
+            <!-- Room Management Section -->
+            <div class="content-section" id="roomManagementSection">
+                <h2 class="section-title">Room ID & Password Management</h2>
+                
+                <div class="empty-state">
+                    <i class="fas fa-door-open"></i>
+                    <p>No rooms created yet</p>
+                    <p>Create tournaments first, then manage room IDs and passwords here</p>
+                </div>
+            </div>
+
+            <!-- History Section -->
+            <div class="content-section" id="historySection">
+                <h2 class="section-title">Tournament History</h2>
+                
+                <div class="empty-state">
+                    <i class="fas fa-history"></i>
+                    <p>No tournament history available</p>
+                    <p>Completed tournaments will appear here</p>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
     <script>
         // Firebase configuration
@@ -779,15 +681,6 @@
         // Initialize Firebase (commented out for demo)
         // firebase.initializeApp(firebaseConfig);
         // const db = firebase.firestore();
-        // const auth = firebase.auth();
-        
-        // Login functionality
-        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            // In a real application, this would verify credentials with Firebase Auth
-            document.getElementById('loginSection').style.display = 'none';
-            document.getElementById('adminPanel').style.display = 'block';
-        });
         
         // Menu navigation
         const menuItems = document.querySelectorAll('.menu-item');
@@ -816,30 +709,77 @@
             });
         });
         
+        // Show/hide fee field based on entry type
+        document.getElementById('entryType').addEventListener('change', function() {
+            const feeField = document.getElementById('feeField');
+            if (this.value === 'paid') {
+                feeField.style.display = 'block';
+            } else {
+                feeField.style.display = 'none';
+            }
+        });
+        
         // Form submission
         document.getElementById('tournamentForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            
+            // Get form values
+            const name = this.querySelector('input[type="text"]').value;
+            const entryType = document.getElementById('entryType').value;
+            const maxParticipants = document.getElementById('maxParticipants').value;
+            const status = document.getElementById('tournamentStatus').value;
+            
+            // Create tournament object
+            const tournament = {
+                name,
+                entryType,
+                maxParticipants,
+                status,
+                createdAt: new Date().toISOString()
+            };
+            
+            // Add fee if paid tournament
+            if (entryType === 'paid') {
+                tournament.entryFee = document.getElementById('entryFee').value;
+            }
+            
+            // Add other fields if they have values
+            const prizes = document.getElementById('prizes').value;
+            if (prizes) tournament.prizes = prizes;
+            
+            const notice = document.getElementById('tournamentNotice').value;
+            if (notice) tournament.notice = notice;
+            
+            const image = document.getElementById('tournamentImage').value;
+            if (image) tournament.image = image;
+            
+            const startTime = document.getElementById('startTime').value;
+            if (startTime) tournament.startTime = startTime;
+            
+            // In a real application, this would be saved to Firebase
+            console.log('Creating tournament:', tournament);
             alert('Tournament created successfully! (In a real application, this would be saved to Firebase)');
+            
+            // Reset form
             this.reset();
+            document.getElementById('feeField').style.display = 'none';
             
             // Update stats
             document.querySelectorAll('.stat-value')[0].textContent = '1';
             
-            // Show success message
+            // Show success message and redirect to tournaments list
             showSection('tournaments');
         });
         
-        // Logout function
-        function logout() {
-            if (confirm('Are you sure you want to logout?')) {
-                document.getElementById('adminPanel').style.display = 'none';
-                document.getElementById('loginSection').style.display = 'flex';
-            }
-        }
+        // Refresh button
+        document.getElementById('refreshBtn').addEventListener('click', function() {
+            alert('Data refreshed! (In a real application, this would fetch latest data from Firebase)');
+        });
         
         // Initialize the admin panel
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Admin panel initialized. No pre-created tournaments.');
+            console.log('Firebase config:', firebaseConfig);
         });
     </script>
 </body>
