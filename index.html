@@ -1,1437 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - GS Tournament</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-            min-height: 100vh;
-        }
-
-        /* Header */
-        .header {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .logo-section {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logo {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(45deg, #e74c3c, #c0392b);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 20px;
-        }
-
-        .admin-title {
-            color: white;
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .admin-info {
-            color: white;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logout-btn {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-
-        .logout-btn:hover {
-            background: #c0392b;
-            transform: translateY(-2px);
-        }
-
-        /* Login Screen */
-        .login-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .login-box {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 40px;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-            max-width: 400px;
-            width: 100%;
-        }
-
-        .login-title {
-            font-size: 28px;
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 30px;
-        }
-
-        .login-btn {
-            background: linear-gradient(45deg, #e74c3c, #c0392b);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-        }
-
-        .login-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(231, 76, 60, 0.4);
-        }
-
-        /* Main Content */
-        .main-content {
-            display: none;
-            padding: 30px;
-        }
-
-        .dashboard {
-            display: grid;
-            grid-template-columns: 250px 1fr;
-            gap: 30px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 20px;
-            height: fit-content;
-            backdrop-filter: blur(10px);
-        }
-
-        .nav-item {
-            display: block;
-            width: 100%;
-            padding: 15px 20px;
-            margin-bottom: 10px;
-            background: transparent;
-            border: none;
-            border-radius: 10px;
-            color: white;
-            text-align: left;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 16px;
-        }
-
-        .nav-item:hover, .nav-item.active {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateX(5px);
-        }
-
-        /* Content Area */
-        .content-area {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 30px;
-            min-height: 600px;
-        }
-
-        .content-section {
-            display: none;
-        }
-
-        .content-section.active {
-            display: block;
-        }
-
-        .section-title {
-            font-size: 24px;
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #e74c3c;
-        }
-
-        /* Forms */
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #2c3e50;
-        }
-
-        .form-input, .form-textarea, .form-select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: border-color 0.3s ease;
-        }
-
-        .form-input:focus, .form-textarea:focus, .form-select:focus {
-            outline: none;
-            border-color: #e74c3c;
-        }
-
-        .form-textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            margin-right: 10px;
-            margin-bottom: 10px;
-        }
-
-        .btn-primary {
-            background: #e74c3c;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #c0392b;
-            transform: translateY(-2px);
-        }
-
-        .btn-success {
-            background: #27ae60;
-            color: white;
-        }
-
-        .btn-success:hover {
-            background: #229954;
-        }
-
-        .btn-warning {
-            background: #f39c12;
-            color: white;
-        }
-
-        .btn-warning:hover {
-            background: #e67e22;
-        }
-
-        .btn-danger {
-            background: #e74c3c;
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background: #c0392b;
-        }
-
-        /* Tables */
-        .table-container {
-            overflow-x: auto;
-            margin-top: 20px;
-        }
-
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .data-table th {
-            background: #2c3e50;
-            color: white;
-            padding: 15px;
-            text-align: left;
-            font-weight: bold;
-        }
-
-        .data-table td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .data-table tr:hover {
-            background: #f8f9fa;
-        }
-
-        /* Status badges */
-        .status-badge {
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        .status-upcoming {
-            background: #3498db;
-            color: white;
-        }
-
-        .status-running {
-            background: #f39c12;
-            color: white;
-        }
-
-        .status-finished {
-            background: #27ae60;
-            color: white;
-        }
-
-        .status-pending {
-            background: #f39c12;
-            color: white;
-        }
-
-        .status-approved {
-            background: #27ae60;
-            color: white;
-        }
-
-        .status-rejected {
-            background: #e74c3c;
-            color: white;
-        }
-
-        /* Stats Cards */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: linear-gradient(45deg, #3498db, #2980b9);
-            color: white;
-            padding: 25px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 10px 20px rgba(52, 152, 219, 0.3);
-        }
-
-        .stat-number {
-            font-size: 36px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .stat-label {
-            font-size: 16px;
-            opacity: 0.9;
-        }
-
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 1000;
-        }
-
-        .modal-content {
-            background: white;
-            margin: 50px auto;
-            padding: 30px;
-            border-radius: 15px;
-            max-width: 600px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #eee;
-        }
-
-        .modal-title {
-            font-size: 20px;
-            font-weight: bold;
-            color: #2c3e50;
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: #999;
-        }
-
-        .close-btn:hover {
-            color: #e74c3c;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .dashboard {
-                grid-template-columns: 1fr;
-            }
-
-            .sidebar {
-                order: 2;
-            }
-
-            .content-area {
-                order: 1;
-            }
-
-            .header {
-                padding: 15px;
-            }
-
-            .admin-title {
-                font-size: 20px;
-            }
-        }
-
-        /* Loading */
-        .loading {
-            text-align: center;
-            padding: 50px;
-            color: #666;
-        }
-
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #e74c3c;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .error-message {
-            background: #f8d7da;
-            color: #721c24;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-            border: 1px solid #f5c6cb;
-        }
-
-        .success-message {
-            background: #d4edda;
-            color: #155724;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-            border: 1px solid #c3e6cb;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tournament Hub - Home</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #e1e8ea;
+      color: #4a5a75;
+    }
+    header {
+      background: #4a5a75;
+      color: white;
+      padding: 12px;
+      text-align: center;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+    header h1 { margin: 0; font-size: 20px; }
+
+    main { margin-top: 70px; margin-bottom: 70px; padding: 10px; }
+
+    /* Banner */
+    .banner { width: 100%; height: 150px; overflow: hidden; position: relative; margin-bottom: 10px; }
+    .banner img { width: 100%; height: 150px; object-fit: cover; position: absolute; transition: opacity 1s; }
+    .banner img.hidden { opacity: 0; }
+
+    /* Ad box */
+    .ad-box { width: 100%; height: 50px; background: #c5c2cd; text-align: center; line-height: 50px; margin-bottom: 10px; }
+
+    /* Filter buttons */
+    .filters { display: flex; gap: 10px; margin-bottom: 10px; }
+    .filters button {
+      flex: 1;
+      padding: 8px;
+      border: none;
+      border-radius: 5px;
+      background: #8e9fc3;
+      color: white;
+      font-weight: bold;
+    }
+
+    /* Tournament card */
+    .card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      margin-bottom: 10px;
+      padding: 10px;
+    }
+    .card img { width: 50px; height: 50px; border-radius: 5px; float: left; margin-right: 10px; }
+    .card h3 { margin: 0; font-size: 16px; }
+    .card p { margin: 2px 0; font-size: 14px; }
+
+    /* Bottom nav */
+    nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #4a5a75;
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 0;
+      z-index: 1000;
+    }
+    nav button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 14px;
+    }
+    nav button.active { font-weight: bold; text-decoration: underline; }
+
+    /* Floating WhatsApp */
+    .whatsapp {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      background: #25D366;
+      color: white;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      text-decoration: none;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+    }
+  </style>
 </head>
 <body>
-    <!-- Login Screen -->
-    <div id="loginScreen" class="login-container">
-        <div class="login-box">
-            <div class="logo" style="margin: 0 auto 20px;">GS</div>
-            <h1 class="login-title">Admin Panel</h1>
-            <p style="color: #666; margin-bottom: 30px;">Sign in to access the admin dashboard</p>
-            <button class="login-btn" onclick="adminSignIn()">Sign in with Google</button>
-        </div>
+  <header>
+    <h1>Tournament Hub</h1>
+  </header>
+
+  <main>
+    <!-- Banner -->
+    <div class="banner">
+      <img src="https://via.placeholder.com/600x150?text=Banner+1" alt="banner1">
+      <img src="https://via.placeholder.com/600x150?text=Banner+2" alt="banner2" class="hidden">
+      <img src="https://via.placeholder.com/600x150?text=Banner+3" alt="banner3" class="hidden">
+      <img src="https://via.placeholder.com/600x150?text=Banner+4" alt="banner4" class="hidden">
     </div>
 
-    <!-- Admin Dashboard -->
-    <div id="adminDashboard" style="display: none;">
-        <!-- Header -->
-        <div class="header">
-            <div class="logo-section">
-                <div class="logo">GS</div>
-                <div class="admin-title">Admin Panel</div>
-            </div>
-            <div class="admin-info">
-                <span id="adminEmail"></span>
-                <button class="logout-btn" onclick="adminSignOut()">Logout</button>
-            </div>
-        </div>
+    <!-- Ad -->
+    <div class="ad-box">Ad Section 320x50</div>
 
-        <!-- Main Content -->
-        <div class="main-content">
-            <div class="dashboard">
-                <!-- Sidebar -->
-                <div class="sidebar">
-                    <button class="nav-item active" onclick="showSection('dashboard')">📊 Dashboard</button>
-                    <button class="nav-item" onclick="showSection('tournaments')">🏆 Tournaments</button>
-                    <button class="nav-item" onclick="showSection('joinRequests')">📝 Join Requests</button>
-                    <button class="nav-item" onclick="showSection('users')">👥 Users</button>
-                    <button class="nav-item" onclick="showSection('banners')">🖼️ Banners</button>
-                    <button class="nav-item" onclick="showSection('history')">📚 History</button>
-                </div>
-
-                <!-- Content Area -->
-                <div class="content-area">
-                    <!-- Dashboard Section -->
-                    <div id="dashboardSection" class="content-section active">
-                        <h2 class="section-title">Dashboard Overview</h2>
-                        <div class="stats-grid">
-                            <div class="stat-card">
-                                <div class="stat-number" id="totalTournaments">0</div>
-                                <div class="stat-label">Total Tournaments</div>
-                            </div>
-                            <div class="stat-card" style="background: linear-gradient(45deg, #27ae60, #229954);">
-                                <div class="stat-number" id="activeTournaments">0</div>
-                                <div class="stat-label">Active Tournaments</div>
-                            </div>
-                            <div class="stat-card" style="background: linear-gradient(45deg, #f39c12, #e67e22);">
-                                <div class="stat-number" id="pendingRequests">0</div>
-                                <div class="stat-label">Pending Requests</div>
-                            </div>
-                            <div class="stat-card" style="background: linear-gradient(45deg, #9b59b6, #8e44ad);">
-                                <div class="stat-number" id="totalUsers">0</div>
-                                <div class="stat-label">Total Users</div>
-                            </div>
-                        </div>
-                        
-                        <h3 style="margin-bottom: 15px;">Recent Activities</h3>
-                        <div id="recentActivities">
-                            <div class="loading">
-                                <div class="spinner"></div>
-                                Loading recent activities...
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Tournaments Section -->
-                    <div id="tournamentsSection" class="content-section">
-                        <h2 class="section-title">Tournament Management</h2>
-                        <button class="btn btn-primary" onclick="showCreateTournamentModal()">+ Create New Tournament</button>
-                        
-                        <div class="table-container">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Entry Fee</th>
-                                        <th>Quota</th>
-                                        <th>Status</th>
-                                        <th>Start Time</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tournamentsTableBody">
-                                    <tr>
-                                        <td colspan="6" class="loading">
-                                            <div class="spinner"></div>
-                                            Loading tournaments...
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- Join Requests Section -->
-                    <div id="joinRequestsSection" class="content-section">
-                        <h2 class="section-title">Join Requests</h2>
-                        
-                        <div class="table-container">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>User</th>
-                                        <th>Tournament</th>
-                                        <th>Request Date</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="joinRequestsTableBody">
-                                    <tr>
-                                        <td colspan="5" class="loading">
-                                            <div class="spinner"></div>
-                                            Loading join requests...
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- Users Section -->
-                    <div id="usersSection" class="content-section">
-                        <h2 class="section-title">User Management</h2>
-                        
-                        <div class="table-container">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>Nickname</th>
-                                        <th>Email</th>
-                                        <th>Joined Tournaments</th>
-                                        <th>Registration Date</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="usersTableBody">
-                                    <tr>
-                                        <td colspan="5" class="loading">
-                                            <div class="spinner"></div>
-                                            Loading users...
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- Banners Section -->
-                    <div id="bannersSection" class="content-section">
-                        <h2 class="section-title">Banner Management</h2>
-                        <button class="btn btn-primary" onclick="showCreateBannerModal()">+ Add New Banner</button>
-                        
-                        <div class="table-container">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>Image</th>
-                                        <th>Link URL</th>
-                                        <th>Order</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="bannersTableBody">
-                                    <tr>
-                                        <td colspan="5" class="loading">
-                                            <div class="spinner"></div>
-                                            Loading banners...
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- History Section -->
-                    <div id="historySection" class="content-section">
-                        <h2 class="section-title">Tournament History</h2>
-                        
-                        <div class="table-container">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>Tournament</th>
-                                        <th>Finished Date</th>
-                                        <th>Participants</th>
-                                        <th>Winners</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="historyTableBody">
-                                    <tr>
-                                        <td colspan="5" class="loading">
-                                            <div class="spinner"></div>
-                                            Loading history...
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- Filters -->
+    <div class="filters">
+      <button id="filterPaid">Paid</button>
+      <button id="filterFree">Free</button>
     </div>
 
-    <!-- Tournament Modal -->
-    <div id="tournamentModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="tournamentModalTitle">Create Tournament</h3>
-                <button class="close-btn" onclick="closeTournamentModal()">&times;</button>
-            </div>
-            <form id="tournamentForm">
-                <div class="form-group">
-                    <label class="form-label">Tournament Name</label>
-                    <input type="text" class="form-input" id="tournamentName" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Profile Image URL</label>
-                    <input type="url" class="form-input" id="profileImage">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Poster Image URL</label>
-                    <input type="url" class="form-input" id="posterImage">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Entry Fee (TK)</label>
-                    <input type="number" class="form-input" id="entryFee" min="0" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Quota</label>
-                    <input type="number" class="form-input" id="quota" min="1" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">1st Prize</label>
-                    <input type="text" class="form-input" id="firstPrize" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">2nd Prize</label>
-                    <input type="text" class="form-input" id="secondPrize" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">3rd Prize</label>
-                    <input type="text" class="form-input" id="thirdPrize" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">4th Prize</label>
-                    <input type="text" class="form-input" id="fourthPrize" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Start Date & Time</label>
-                    <input type="datetime-local" class="form-input" id="startTime" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Notice</label>
-                    <textarea class="form-textarea" id="notice" placeholder="Tournament notice for participants"></textarea>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Room ID</label>
-                    <input type="text" class="form-input" id="roomId" placeholder="Will be added later">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="text" class="form-input" id="password" placeholder="Will be added later">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Status</label>
-                    <select class="form-select" id="status">
-                        <option value="upcoming">Upcoming</option>
-                        <option value="running">Running</option>
-                        <option value="finished">Finished</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-primary">Save Tournament</button>
-                <button type="button" class="btn" onclick="closeTournamentModal()">Cancel</button>
-            </form>
-        </div>
-    </div>
+    <!-- Tournament list -->
+    <div id="tournamentList"></div>
+  </main>
 
-    <!-- Banner Modal -->
-    <div id="bannerModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Add Banner</h3>
-                <button class="close-btn" onclick="closeBannerModal()">&times;</button>
-            </div>
-            <form id="bannerForm">
-                <div class="form-group">
-                    <label class="form-label">Image URL</label>
-                    <input type="url" class="form-input" id="bannerImageUrl" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Link URL</label>
-                    <input type="url" class="form-input" id="bannerLinkUrl" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Order</label>
-                    <input type="number" class="form-input" id="bannerOrder" min="1" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Save Banner</button>
-                <button type="button" class="btn" onclick="closeBannerModal()">Cancel</button>
-            </form>
-        </div>
-    </div>
+  <!-- Bottom nav -->
+  <nav>
+    <button class="active">🏠 Home</button>
+    <button onclick="alert('Tournament Tab - in index.html')">🏆 Tournament</button>
+    <a href="update.html"><button>🔔 Update</button></a>
+  </nav>
 
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <!-- WhatsApp -->
+  <a class="whatsapp" href="https://wa.me/8801880285176?text=ভাই+আমি+টুর্নামেন্টে+অংশ+নিব" target="_blank">💬</a>
 
-    <script>
-        // Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyBmnZOuF_pnV7OMXpbVvtf3CusGzWyBhgo",
-            authDomain: "ff-2-41e00.firebaseapp.com",
-            projectId: "ff-2-41e00",
-            storageBucket: "ff-2-41e00.firebasestorage.app",
-            messagingSenderId: "974994116979",
-            appId: "1:974994116979:web:7a39dfc8e7f8d2c9a7b506"
-        };
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, signInAnonymously } 
+      from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+    import { getFirestore, collection, getDocs } 
+      from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
+    const firebaseConfig = {
+      apiKey: "AIzaSyBmnZOuF_pnV7OMXpbVvtf3CusGzWyBhgo",
+      authDomain: "ff-2-41e00.firebaseapp.com",
+      projectId: "ff-2-41e00",
+      storageBucket: "ff-2-41e00.firebasestorage.app",
+      messagingSenderId: "974994116979",
+      appId: "1:974994116979:web:7a39dfc8e7f8d2c9a7b506"
+    };
 
-        let currentAdmin = null;
-        let currentEditingTournament = null;
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-        // Authentication State Observer
-        auth.onAuthStateChanged(async (user) => {
-            if (user) {
-                // Check if user is admin
-                try {
-                    const adminDoc = await db.collection('admins').doc(user.uid).get();
-                    if (adminDoc.exists) {
-                        currentAdmin = user;
-                        document.getElementById('loginScreen').style.display = 'none';
-                        document.getElementById('adminDashboard').style.display = 'block';
-                        document.getElementById('adminEmail').textContent = user.email;
-                        loadDashboard();
-                    } else {
-                        // Not an admin, sign out
-                        await auth.signOut();
-                        alert('Access denied. Admin privileges required.');
-                    }
-                } catch (error) {
-                    console.error('Error checking admin status:', error);
-                    await auth.signOut();
-                }
-            } else {
-                currentAdmin = null;
-                document.getElementById('loginScreen').style.display = 'flex';
-                document.getElementById('adminDashboard').style.display = 'none';
-            }
-        });
+    // Example: Load Tournaments
+    async function loadTournaments() {
+      const q = await getDocs(collection(db, "tournaments"));
+      const container = document.getElementById("tournamentList");
+      container.innerHTML = "";
+      q.forEach(doc => {
+        const t = doc.data();
+        const div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = `
+          <img src="${t.image || 'https://via.placeholder.com/50'}">
+          <h3>${t.name}</h3>
+          <p>Quota: ${t.quotaCurrent || 0}/${t.quotaMax || 0}</p>
+          <p>Entry Fee: ${t.entryFee || 'Free'}</p>
+        `;
+        container.appendChild(div);
+      });
+    }
+    loadTournaments();
 
-        // Admin Sign In
-        async function adminSignIn() {
-            try {
-                const provider = new firebase.auth.GoogleAuthProvider();
-                await auth.signInWithPopup(provider);
-            } catch (error) {
-                console.error('Error signing in:', error);
-                alert('Error signing in: ' + error.message);
-            }
-        }
-
-        // Admin Sign Out
-        async function adminSignOut() {
-            try {
-                await auth.signOut();
-            } catch (error) {
-                console.error('Error signing out:', error);
-            }
-        }
-
-        // Show Section
-        function showSection(section) {
-            // Update nav items
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            event.target.classList.add('active');
-
-            // Hide all sections
-            document.querySelectorAll('.content-section').forEach(sec => {
-                sec.classList.remove('active');
-            });
-
-            // Show selected section
-            document.getElementById(section + 'Section').classList.add('active');
-
-            // Load section data
-            switch(section) {
-                case 'dashboard':
-                    loadDashboard();
-                    break;
-                case 'tournaments':
-                    loadTournaments();
-                    break;
-                case 'joinRequests':
-                    loadJoinRequests();
-                    break;
-                case 'users':
-                    loadUsers();
-                    break;
-                case 'banners':
-                    loadBanners();
-                    break;
-                case 'history':
-                    loadHistory();
-                    break;
-            }
-        }
-
-        // Load Dashboard
-        async function loadDashboard() {
-            try {
-                // Load stats
-                const [tournaments, users, joinRequests, history] = await Promise.all([
-                    db.collection('tournaments').get(),
-                    db.collection('users').get(),
-                    db.collection('joinRequests').where('status', '==', 'pending').get(),
-                    db.collection('history').get()
-                ]);
-
-                document.getElementById('totalTournaments').textContent = tournaments.size;
-                document.getElementById('activeTournaments').textContent = 
-                    tournaments.docs.filter(doc => ['upcoming', 'running'].includes(doc.data().status)).length;
-                document.getElementById('pendingRequests').textContent = joinRequests.size;
-                document.getElementById('totalUsers').textContent = users.size;
-
-                // Load recent activities
-                loadRecentActivities();
-            } catch (error) {
-                console.error('Error loading dashboard:', error);
-            }
-        }
-
-        // Load Recent Activities
-        async function loadRecentActivities() {
-            try {
-                const recentRequests = await db.collection('joinRequests')
-                    .orderBy('createdAt', 'desc')
-                    .limit(5)
-                    .get();
-
-                const container = document.getElementById('recentActivities');
-                container.innerHTML = '';
-
-                if (recentRequests.empty) {
-                    container.innerHTML = '<p style="color: #666; text-align: center;">No recent activities</p>';
-                    return;
-                }
-
-                recentRequests.forEach(doc => {
-                    const request = doc.data();
-                    const div = document.createElement('div');
-                    div.style.cssText = 'padding: 15px; border-left: 4px solid #e74c3c; margin-bottom: 10px; background: #f8f9fa; border-radius: 5px;';
-                    div.innerHTML = `
-                        <strong>${request.userNickname}</strong> requested to join <strong>${request.tournamentName}</strong>
-                        <br><small style="color: #666;">${new Date(request.createdAt?.toDate()).toLocaleString()}</small>
-                    `;
-                    container.appendChild(div);
-                });
-            } catch (error) {
-                console.error('Error loading recent activities:', error);
-                document.getElementById('recentActivities').innerHTML = '<p style="color: #e74c3c;">Error loading activities</p>';
-            }
-        }
-
-        // Load Tournaments
-        async function loadTournaments() {
-            try {
-                const snapshot = await db.collection('tournaments').orderBy('createdAt', 'desc').get();
-                const tbody = document.getElementById('tournamentsTableBody');
-                tbody.innerHTML = '';
-
-                if (snapshot.empty) {
-                    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #666;">No tournaments found</td></tr>';
-                    return;
-                }
-
-                snapshot.forEach(doc => {
-                    const tournament = { id: doc.id, ...doc.data() };
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${tournament.name}</td>
-                        <td>${tournament.entryFee > 0 ? tournament.entryFee + ' TK' : 'Free'}</td>
-                        <td>${tournament.currentParticipants || 0}/${tournament.quota}</td>
-                        <td><span class="status-badge status-${tournament.status}">${tournament.status}</span></td>
-                        <td>${tournament.startTime ? new Date(tournament.startTime.toDate()).toLocaleString() : 'Not set'}</td>
-                        <td>
-                            <button class="btn btn-warning" onclick="editTournament('${tournament.id}')">Edit</button>
-                            <button class="btn btn-danger" onclick="deleteTournament('${tournament.id}')">Delete</button>
-                            ${tournament.status === 'finished' ? 
-                                `<button class="btn btn-success" onclick="moveToHistory('${tournament.id}')">Move to History</button>` : ''}
-                        </td>
-                    `;
-                    tbody.appendChild(row);
-                });
-            } catch (error) {
-                console.error('Error loading tournaments:', error);
-                document.getElementById('tournamentsTableBody').innerHTML = 
-                    '<tr><td colspan="6" style="text-align: center; color: #e74c3c;">Error loading tournaments</td></tr>';
-            }
-        }
-
-        // Load Join Requests
-        async function loadJoinRequests() {
-            try {
-                const snapshot = await db.collection('joinRequests').orderBy('createdAt', 'desc').get();
-                const tbody = document.getElementById('joinRequestsTableBody');
-                tbody.innerHTML = '';
-
-                if (snapshot.empty) {
-                    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #666;">No join requests found</td></tr>';
-                    return;
-                }
-
-                snapshot.forEach(doc => {
-                    const request = { id: doc.id, ...doc.data() };
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${request.userNickname}<br><small>${request.userEmail}</small></td>
-                        <td>${request.tournamentName}</td>
-                        <td>${new Date(request.createdAt?.toDate()).toLocaleString()}</td>
-                        <td><span class="status-badge status-${request.status}">${request.status}</span></td>
-                        <td>
-                            ${request.status === 'pending' ? `
-                                <button class="btn btn-success" onclick="approveRequest('${request.id}')">Approve</button>
-                                <button class="btn btn-danger" onclick="rejectRequest('${request.id}')">Reject</button>
-                            ` : ''}
-                        </td>
-                    `;
-                    tbody.appendChild(row);
-                });
-            } catch (error) {
-                console.error('Error loading join requests:', error);
-                document.getElementById('joinRequestsTableBody').innerHTML = 
-                    '<tr><td colspan="5" style="text-align: center; color: #e74c3c;">Error loading join requests</td></tr>';
-            }
-        }
-
-        // Load Users
-        async function loadUsers() {
-            try {
-                const snapshot = await db.collection('users').orderBy('createdAt', 'desc').get();
-                const tbody = document.getElementById('usersTableBody');
-                tbody.innerHTML = '';
-
-                if (snapshot.empty) {
-                    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #666;">No users found</td></tr>';
-                    return;
-                }
-
-                snapshot.forEach(doc => {
-                    const user = { id: doc.id, ...doc.data() };
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${user.nickname}</td>
-                        <td>${user.email}</td>
-                        <td>${user.joinedTournaments?.length || 0}</td>
-                        <td>${user.createdAt ? new Date(user.createdAt.toDate()).toLocaleDateString() : 'Unknown'}</td>
-                        <td>
-                            <button class="btn btn-warning" onclick="viewUserDetails('${user.id}')">View Details</button>
-                        </td>
-                    `;
-                    tbody.appendChild(row);
-                });
-            } catch (error) {
-                console.error('Error loading users:', error);
-                document.getElementById('usersTableBody').innerHTML = 
-                    '<tr><td colspan="5" style="text-align: center; color: #e74c3c;">Error loading users</td></tr>';
-            }
-        }
-
-        // Load Banners
-        async function loadBanners() {
-            try {
-                const snapshot = await db.collection('banners').orderBy('order').get();
-                const tbody = document.getElementById('bannersTableBody');
-                tbody.innerHTML = '';
-
-                if (snapshot.empty) {
-                    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #666;">No banners found</td></tr>';
-                    return;
-                }
-
-                snapshot.forEach(doc => {
-                    const banner = { id: doc.id, ...doc.data() };
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td><img src="${banner.imageUrl}" alt="Banner" style="width: 100px; height: 50px; object-fit: cover; border-radius: 5px;"></td>
-                        <td><a href="${banner.linkUrl}" target="_blank">${banner.linkUrl}</a></td>
-                        <td>${banner.order}</td>
-                        <td><span class="status-badge ${banner.isActive ? 'status-approved' : 'status-pending'}">${banner.isActive ? 'Active' : 'Inactive'}</span></td>
-                        <td>
-                            <button class="btn btn-warning" onclick="toggleBanner('${banner.id}', ${!banner.isActive})">${banner.isActive ? 'Deactivate' : 'Activate'}</button>
-                            <button class="btn btn-danger" onclick="deleteBanner('${banner.id}')">Delete</button>
-                        </td>
-                    `;
-                    tbody.appendChild(row);
-                });
-            } catch (error) {
-                console.error('Error loading banners:', error);
-                document.getElementById('bannersTableBody').innerHTML = 
-                    '<tr><td colspan="5" style="text-align: center; color: #e74c3c;">Error loading banners</td></tr>';
-            }
-        }
-
-        // Load History
-        async function loadHistory() {
-            try {
-                const snapshot = await db.collection('history').orderBy('finishedDate', 'desc').get();
-                const tbody = document.getElementById('historyTableBody');
-                tbody.innerHTML = '';
-
-                if (snapshot.empty) {
-                    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #666;">No tournament history found</td></tr>';
-                    return;
-                }
-
-                snapshot.forEach(doc => {
-                    const history = { id: doc.id, ...doc.data() };
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${history.name}</td>
-                        <td>${new Date(history.finishedDate.toDate()).toLocaleDateString()}</td>
-                        <td>${history.totalParticipants || 0}</td>
-                        <td>${history.winners?.map((w, i) => `${i+1}. ${w.nickname}`).join('<br>') || 'TBA'}</td>
-                        <td>
-                            <button class="btn btn-danger" onclick="deleteHistory('${history.id}')">Delete</button>
-                        </td>
-                    `;
-                    tbody.appendChild(row);
-                });
-            } catch (error) {
-                console.error('Error loading history:', error);
-                document.getElementById('historyTableBody').innerHTML = 
-                    '<tr><td colspan="5" style="text-align: center; color: #e74c3c;">Error loading history</td></tr>';
-            }
-        }
-
-        // Tournament Management
-        function showCreateTournamentModal() {
-            currentEditingTournament = null;
-            document.getElementById('tournamentModalTitle').textContent = 'Create Tournament';
-            document.getElementById('tournamentForm').reset();
-            document.getElementById('tournamentModal').style.display = 'block';
-        }
-
-        async function editTournament(tournamentId) {
-            try {
-                const doc = await db.collection('tournaments').doc(tournamentId).get();
-                if (!doc.exists) return;
-
-                const tournament = doc.data();
-                currentEditingTournament = tournamentId;
-                
-                document.getElementById('tournamentModalTitle').textContent = 'Edit Tournament';
-                document.getElementById('tournamentName').value = tournament.name || '';
-                document.getElementById('profileImage').value = tournament.profileImage || '';
-                document.getElementById('posterImage').value = tournament.posterImage || '';
-                document.getElementById('entryFee').value = tournament.entryFee || 0;
-                document.getElementById('quota').value = tournament.quota || 0;
-                document.getElementById('firstPrize').value = tournament.prizes?.first || '';
-                document.getElementById('secondPrize').value = tournament.prizes?.second || '';
-                document.getElementById('thirdPrize').value = tournament.prizes?.third || '';
-                document.getElementById('fourthPrize').value = tournament.prizes?.fourth || '';
-                document.getElementById('notice').value = tournament.notice || '';
-                document.getElementById('roomId').value = tournament.roomId || '';
-                document.getElementById('password').value = tournament.password || '';
-                document.getElementById('status').value = tournament.status || 'upcoming';
-                
-                if (tournament.startTime) {
-                    const date = new Date(tournament.startTime.toDate());
-                    document.getElementById('startTime').value = date.toISOString().slice(0, 16);
-                }
-                
-                document.getElementById('tournamentModal').style.display = 'block';
-            } catch (error) {
-                console.error('Error loading tournament for edit:', error);
-                alert('Error loading tournament data');
-            }
-        }
-
-        function closeTournamentModal() {
-            document.getElementById('tournamentModal').style.display = 'none';
-            currentEditingTournament = null;
-        }
-
-        // Tournament Form Submit
-        document.getElementById('tournamentForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            try {
-                const formData = {
-                    name: document.getElementById('tournamentName').value,
-                    profileImage: document.getElementById('profileImage').value,
-                    posterImage: document.getElementById('posterImage').value,
-                    entryFee: parseInt(document.getElementById('entryFee').value),
-                    quota: parseInt(document.getElementById('quota').value),
-                    prizes: {
-                        first: document.getElementById('firstPrize').value,
-                        second: document.getElementById('secondPrize').value,
-                        third: document.getElementById('thirdPrize').value,
-                        fourth: document.getElementById('fourthPrize').value
-                    },
-                    startTime: firebase.firestore.Timestamp.fromDate(new Date(document.getElementById('startTime').value)),
-                    notice: document.getElementById('notice').value,
-                    roomId: document.getElementById('roomId').value,
-                    password: document.getElementById('password').value,
-                    status: document.getElementById('status').value,
-                    isPaid: parseInt(document.getElementById('entryFee').value) > 0,
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                };
-
-                if (currentEditingTournament) {
-                    // Update existing tournament
-                    await db.collection('tournaments').doc(currentEditingTournament).update(formData);
-                    alert('Tournament updated successfully!');
-                } else {
-                    // Create new tournament
-                    formData.currentParticipants = 0;
-                    formData.participants = [];
-                    formData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-                    
-                    await db.collection('tournaments').add(formData);
-                    alert('Tournament created successfully!');
-                }
-
-                closeTournamentModal();
-                loadTournaments();
-            } catch (error) {
-                console.error('Error saving tournament:', error);
-                alert('Error saving tournament: ' + error.message);
-            }
-        });
-
-        // Delete Tournament
-        async function deleteTournament(tournamentId) {
-            if (!confirm('Are you sure you want to delete this tournament?')) return;
-
-            try {
-                await db.collection('tournaments').doc(tournamentId).delete();
-                alert('Tournament deleted successfully!');
-                loadTournaments();
-            } catch (error) {
-                console.error('Error deleting tournament:', error);
-                alert('Error deleting tournament: ' + error.message);
-            }
-        }
-
-        // Approve Join Request
-        async function approveRequest(requestId) {
-            try {
-                const requestDoc = await db.collection('joinRequests').doc(requestId).get();
-                if (!requestDoc.exists) return;
-
-                const request = requestDoc.data();
-                
-                // Update tournament and user
-                const tournamentRef = db.collection('tournaments').doc(request.tournamentId);
-                const userRef = db.collection('users').doc(request.userId);
-                
-                await db.runTransaction(async (transaction) => {
-                    const tournamentDoc = await transaction.get(tournamentRef);
-                    const userDoc = await transaction.get(userRef);
-                    
-                    if (!tournamentDoc.exists || !userDoc.exists) {
-                        throw new Error('Document does not exist');
-                    }
-                    
-                    const tournamentData = tournamentDoc.data();
-                    const userData = userDoc.data();
-                    
-                    if (tournamentData.currentParticipants >= tournamentData.quota) {
-                        throw new Error('Tournament is full');
-                    }
-                    
-                    transaction.update(tournamentRef, {
-                        currentParticipants: tournamentData.currentParticipants + 1,
-                        participants: firebase.firestore.FieldValue.arrayUnion(request.userId)
-                    });
-                    
-                    transaction.update(userRef, {
-                        joinedTournaments: firebase.firestore.FieldValue.arrayUnion(request.tournamentId)
-                    });
-                    
-                    transaction.update(db.collection('joinRequests').doc(requestId), {
-                        status: 'approved',
-                        processedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                        processedBy: currentAdmin.uid
-                    });
-                });
-                
-                alert('Request approved successfully!');
-                loadJoinRequests();
-                loadDashboard();
-            } catch (error) {
-                console.error('Error approving request:', error);
-                alert('Error approving request: ' + error.message);
-            }
-        }
-
-        // Reject Join Request
-        async function rejectRequest(requestId) {
-            try {
-                await db.collection('joinRequests').doc(requestId).update({
-                    status: 'rejected',
-                    processedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    processedBy: currentAdmin.uid
-                });
-                
-                alert('Request rejected successfully!');
-                loadJoinRequests();
-                loadDashboard();
-            } catch (error) {
-                console.error('Error rejecting request:', error);
-                alert('Error rejecting request: ' + error.message);
-            }
-        }
-
-        // Banner Management
-        function showCreateBannerModal() {
-            document.getElementById('bannerForm').reset();
-            document.getElementById('bannerModal').style.display = 'block';
-        }
-
-        function closeBannerModal() {
-            document.getElementById('bannerModal').style.display = 'none';
-        }
-
-        document.getElementById('bannerForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            try {
-                const bannerData = {
-                    imageUrl: document.getElementById('bannerImageUrl').value,
-                    linkUrl: document.getElementById('bannerLinkUrl').value,
-                    order: parseInt(document.getElementById('bannerOrder').value),
-                    isActive: true,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                };
-
-                await db.collection('banners').add(bannerData);
-                alert('Banner added successfully!');
-                closeBannerModal();
-                loadBanners();
-            } catch (error) {
-                console.error('Error adding banner:', error);
-                alert('Error adding banner: ' + error.message);
-            }
-        });
-
-        async function toggleBanner(bannerId, isActive) {
-            try {
-                await db.collection('banners').doc(bannerId).update({ isActive });
-                alert(`Banner ${isActive ? 'activated' : 'deactivated'} successfully!`);
-                loadBanners();
-            } catch (error) {
-                console.error('Error toggling banner:', error);
-                alert('Error updating banner: ' + error.message);
-            }
-        }
-
-        async function deleteBanner(bannerId) {
-            if (!confirm('Are you sure you want to delete this banner?')) return;
-
-            try {
-                await db.collection('banners').doc(bannerId).delete();
-                alert('Banner deleted successfully!');
-                loadBanners();
-            } catch (error) {
-                console.error('Error deleting banner:', error);
-                alert('Error deleting banner: ' + error.message);
-            }
-        }
-
-        // Move Tournament to History
-        async function moveToHistory(tournamentId) {
-            try {
-                const tournamentDoc = await db.collection('tournaments').doc(tournamentId).get();
-                if (!tournamentDoc.exists) return;
-
-                const tournament = tournamentDoc.data();
-                
-                // Create history entry
-                const historyData = {
-                    tournamentId: tournamentId,
-                    name: tournament.name,
-                    profileImage: tournament.profileImage,
-                    finishedDate: firebase.firestore.FieldValue.serverTimestamp(),
-                    totalParticipants: tournament.currentParticipants || 0,
-                    winners: [] // Admin can manually add winners
-                };
-
-                await db.collection('history').doc(tournamentId).set(historyData);
-                await db.collection('tournaments').doc(tournamentId).delete();
-                
-                alert('Tournament moved to history successfully!');
-                loadTournaments();
-                loadHistory();
-            } catch (error) {
-                console.error('Error moving tournament to history:', error);
-                alert('Error moving tournament to history: ' + error.message);
-            }
-        }
-
-        // Delete History
-        async function deleteHistory(historyId) {
-            if (!confirm('Are you sure you want to delete this history entry?')) return;
-
-            try {
-                await db.collection('history').doc(historyId).delete();
-                alert('History entry deleted successfully!');
-                loadHistory();
-            } catch (error) {
-                console.error('Error deleting history:', error);
-                alert('Error deleting history: ' + error.message);
-            }
-        }
-
-        // View User Details
-        function viewUserDetails(userId) {
-            // This could open a modal with detailed user information
-            alert('User details feature coming soon!');
-        }
-
-        // Close modals when clicking outside
-        window.onclick = function(event) {
-            const tournamentModal = document.getElementById('tournamentModal');
-            const bannerModal = document.getElementById('bannerModal');
-            
-            if (event.target === tournamentModal) {
-                closeTournamentModal();
-            }
-            if (event.target === bannerModal) {
-                closeBannerModal();
-            }
-        }
-    </script>
+    // Banner auto slide
+    const banners = document.querySelectorAll(".banner img");
+    let current = 0;
+    setInterval(() => {
+      banners[current].classList.add("hidden");
+      current = (current+1) % banners.length;
+      banners[current].classList.remove("hidden");
+    }, 3000);
+  </script>
 </body>
-    </html>
+</html>
